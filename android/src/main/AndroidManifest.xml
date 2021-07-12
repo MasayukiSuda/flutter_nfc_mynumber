@@ -1,3 +1,4 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.daasuu.flutter_nfc_mynumber">
+    package="com.daasuu.flutter_nfc_mynumber">
+    <uses-permission android:name="android.permission.NFC" />
 </manifest>
