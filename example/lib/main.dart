@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_nfc_mynumber/flutter_nfc_mynumber.dart';
+import 'package:flutter_nfc_mynumber/mynumber_util.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,8 +39,7 @@ class _MyAppState extends State<MyApp> {
                 await FlutterNfcMynumber.setIosAlertMessage("working on it...");
 
                 var loginPinRetryCount =
-                    await FlutterNfcMynumber.getLoginPinRetryCount();
-
+                    await MynumberUtil.getLoginPinRetryCount();
 
                 print("loginPinRetryCount = $loginPinRetryCount");
               } catch (e) {

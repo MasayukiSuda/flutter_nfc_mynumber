@@ -62,38 +62,4 @@ class FlutterNfcMynumber {
       return await _channel.invokeMethod('setIosAlertMessage', message);
     }
   }
-
-  static Future<int> getLoginPinRetryCount() async {
-    // SELECT FILE 公的個人認証AP
-    var selectFile =
-        await transceive(Uint8List.fromList(MynumberCommand.commandSelectFile));
-    commandResultCheck(selectFile);
-
-    // SELECT FILE 認証用PIN
-    var selectFileAuthPin = await transceive(
-        Uint8List.fromList(MynumberCommand.commandSelectFileAuthPin));
-    commandResultCheck(selectFileAuthPin);
-
-    // retry回数をGET
-    var retryCountResult = await transceive(
-        Uint8List.fromList(MynumberCommand.commandReadRetryCount));
-    commandRetryCountResultCheck(retryCountResult);
-
-    return _getRetryCountFromResult(retryCountResult);
-  }
-
-  static void commandResultCheck(List<int> result) {
-    if (listEquals(result.getRange(result.length - 2, result.length).toList(),
-        MynumberCommand.resultSuccess)) return;
-    throw MynumberException(MynumberCommandError.UNEXPECTED_COMMAND);
-  }
-
-  static void commandRetryCountResultCheck(List<int> result) {
-    if (result.first == MynumberCommand.retryResultSuccess) return;
-    throw MynumberException(MynumberCommandError.UNEXPECTED_COMMAND);
-  }
-
-  static int _getRetryCountFromResult(List<int> result) {
-    return int.parse(result.last.toRadixString(16).replaceAll("c", ""));
-  }
 }
