@@ -1,0 +1,60 @@
+class MynumberCommand {
+  static get resultSuccess => [0x90, 0x00];
+
+  static get retryResultSuccess => 0x63;
+
+  // 公的個人認証APのselect file APDU
+  static get commandSelectFile => [
+        0x00,
+        0xA4,
+        0x04,
+        0x0C,
+        0x0A,
+        0xD3,
+        0x92,
+        0xF0,
+        0x00,
+        0x26,
+        0x01,
+        0x00,
+        0x00,
+        0x00,
+        0x01
+      ];
+
+  // 証明書全体のサイズを求める APDU
+  static get commandReadBinary => [0x00, 0xB0, 0x00, 0x00, 0x04];
+
+  // PINリトライ回数をGET
+  static get commandReadRetryCount => [0x00, 0x20, 0x00, 0x80];
+
+  // 署名用PINの select file APDU
+  static get commandSelectFilePinSync =>
+      [0x00, 0xA4, 0x02, 0x0C, 0x02, 0x00, 0x1B];
+
+  // 署名用証明書の select file APDU
+  static get commandSelectFileCert =>
+      [0x00, 0xA4, 0x02, 0x0C, 0x02, 0x00, 0x01];
+
+  // 署名用鍵の select file APDU
+  static get commandSelectFileKeySync =>
+      [0x00, 0xA4, 0x02, 0x0C, 0x02, 0x00, 0x1A];
+
+  // 認証用証明書の select file APDU
+  static get commandSelectFileAuthCert =>
+      [0x00, 0xA4, 0x02, 0x0C, 0x02, 0x00, 0x0A];
+
+  // 認証用PINの select file APDU
+  static get commandSelectFileAuthPin =>
+      [0x00, 0xA4, 0x02, 0x0C, 0x02, 0x00, 0x18];
+
+  // 認証用鍵の select file APDI
+  static get commandSelectFileAuthKey =>
+      [0x00, 0xA4, 0x02, 0x0C, 0x02, 0x00, 0x17];
+
+  // 認証用PINの verify APDUのヘッダ
+  static get commandPinVerify => [0x00, 0x20, 0x00, 0x80];
+
+  // 暗号化用の APDU のヘッダ
+  static get commandSignatureDataHeader => [0x80, 0x2A, 0x00, 0x80];
+}
