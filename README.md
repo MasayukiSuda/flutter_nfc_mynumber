@@ -42,6 +42,8 @@ var authPinRetryCount = await MynumberUtil.getAuthPinRetryCount();
 await FlutterNfcMynumber.finishSession();
 ```
 
+A more complicated example can be seen in example dir.
+
 ## Special Thanks to
 - [flutter-nfc-manager](https://github.com/okadan/flutter-nfc-manager)
 - [flutter_nfc_kit](https://github.com/nfcim/flutter_nfc_kit)
