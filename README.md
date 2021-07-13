@@ -23,3 +23,15 @@ Flutter plugin for accessing the Japanese Mynumber features on Android and iOS.
 1. `D3921000310001010401`
 
 
+## Usage
+
+```Dart
+
+```
+
+## Special Thanks to
+- [flutter-nfc-manager](https://github.com/okadan/flutter-nfc-manager)
+- [flutter_nfc_kit](https://github.com/nfcim/flutter_nfc_kit)
+
+
+
