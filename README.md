@@ -31,6 +31,15 @@ if (availability != NFCAvailability.available) {
     // oh-no
 }
 
+
+await FlutterNfcMynumber.startSession();
+
+await FlutterNfcMynumber.setIosAlertMessage("working on it...");
+
+var authPinRetryCount = await MynumberUtil.getAuthPinRetryCount();
+
+
+await FlutterNfcMynumber.finishSession();
 ```
 
 ## Special Thanks to
