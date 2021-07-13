@@ -26,6 +26,10 @@ Flutter plugin for accessing the Japanese Mynumber features on Android and iOS.
 ## Usage
 
 ```Dart
+var nfcAvailability = await FlutterNfcMynumber.nfcAvailability;
+if (availability != NFCAvailability.available) {
+    // oh-no
+}
 
 ```
 
