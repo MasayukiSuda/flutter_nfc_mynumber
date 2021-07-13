@@ -13,6 +13,13 @@ Flutter plugin for accessing the Japanese Mynumber features on Android and iOS.
 
 * Add [NFCReaderUsageDescription](https://developer.apple.com/documentation/bundleresources/information_property_list/nfcreaderusagedescription) to your `Info.plist`.
 
-* Add [com.apple.developer.nfc.readersession.iso7816.select-identifiers](https://developer.apple.com/documentation/bundleresources/information_property_list/select-identifiers) to your `Info.plist` as needed.
+* Add [com.apple.developer.nfc.readersession.iso7816.select-identifiers](https://developer.apple.com/documentation/bundleresources/information_property_list/select-identifiers) to your `Info.plist`.
+
+* Add the following 4 items to [com.apple.developer.nfc.readersession.iso7816.select-identifiers](https://developer.apple.com/documentation/bundleresources/information_property_list/select-identifiers)
+
+1. `D392F000260100000001`
+1. `D3921000310001010408`
+1. `D3921000310001010100`
+1. `D3921000310001010401`
 
 
