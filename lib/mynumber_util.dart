@@ -8,7 +8,7 @@ import 'mynumber_command_error.dart';
 import 'mynumber_exception.dart';
 
 class MynumberUtil {
-  static Future<int> getLoginPinRetryCount() async {
+  static Future<int> getAuthPinRetryCount() async {
     // SELECT FILE 公的個人認証AP
     var selectFile = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(MynumberCommand.commandSelectFile));
@@ -27,7 +27,7 @@ class MynumberUtil {
     return _getRetryCountFromResult(retryCountResult);
   }
 
-  static Future<int> getDocumentPinRetryCount() async {
+  static Future<int> getSigningPinRetryCount() async {
     // SELECT FILE 公的個人認証AP
     var selectFile = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(MynumberCommand.commandSelectFile));
@@ -46,7 +46,7 @@ class MynumberUtil {
     return _getRetryCountFromResult(retryCountResult);
   }
 
-  static Future<List<int>> getLoginCertificate() async {
+  static Future<List<int>> getAuthCertificate() async {
     // SELECT FILE 公的個人認証AP
     var selectFile = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(MynumberCommand.commandSelectFile));
@@ -61,8 +61,8 @@ class MynumberUtil {
     return await readBinary();
   }
 
-  static Future<List<int>> getSignatureByLoginPassword(
-      String loginPassword, String digestValue) async {
+  static Future<List<int>> getSignatureByAuthPassword(
+      String password, String digestValue) async {
     // SELECT FILE 公的個人認証AP
     var selectFile = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(MynumberCommand.commandSelectFile));
@@ -75,7 +75,7 @@ class MynumberUtil {
 
     // VERIFY 認証用PIN
     var verifyUserCertificationResult = await FlutterNfcMynumber.transceive(
-        Uint8List.fromList(commandSignaturePin(loginPassword.codeUnits)));
+        Uint8List.fromList(commandSignaturePin(password.codeUnits)));
     commandResultCheck(verifyUserCertificationResult);
 
     // SELECT FILE 認証用鍵
@@ -92,8 +92,8 @@ class MynumberUtil {
         .toList();
   }
 
-  static Future<List<int>> getDocumentCertificate(
-      String documentPassword) async {
+  static Future<List<int>> getSigningCertificate(
+      String password) async {
     // SELECT FILE 公的個人認証AP
     var selectFile = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(MynumberCommand.commandSelectFile));
@@ -106,7 +106,7 @@ class MynumberUtil {
 
     // VERIFY 認証用PIN
     var verifyUserCertificationResult = await FlutterNfcMynumber.transceive(
-        Uint8List.fromList(commandSignaturePin(documentPassword.codeUnits)));
+        Uint8List.fromList(commandSignaturePin(password.codeUnits)));
     commandResultCheck(verifyUserCertificationResult);
 
     // SELECT FILE CERT
@@ -118,8 +118,8 @@ class MynumberUtil {
     return await readBinary();
   }
 
-  static Future<List<int>> getSignatureByDocumentPassword(
-      String documentPassword, String digestValue) async {
+  static Future<List<int>> getSignatureBySigningPassword(
+      String password, String digestValue) async {
     // SELECT FILE 公的個人認証AP
     var selectFile = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(MynumberCommand.commandSelectFile));
@@ -132,7 +132,7 @@ class MynumberUtil {
 
     // VERIFY 認証用PIN
     var verifyUserCertificationResult = await FlutterNfcMynumber.transceive(
-        Uint8List.fromList(commandSignaturePin(documentPassword.codeUnits)));
+        Uint8List.fromList(commandSignaturePin(password.codeUnits)));
     commandResultCheck(verifyUserCertificationResult);
 
     // SELECT FILE CERT

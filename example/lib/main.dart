@@ -38,10 +38,10 @@ class _MyAppState extends State<MyApp> {
 
                 await FlutterNfcMynumber.setIosAlertMessage("working on it...");
 
-                var loginPinRetryCount =
-                    await MynumberUtil.getLoginPinRetryCount();
+                var authPinRetryCount =
+                    await MynumberUtil.getAuthPinRetryCount();
 
-                print("loginPinRetryCount = $loginPinRetryCount");
+                print("authPinRetryCount = $authPinRetryCount");
               } catch (e) {
                 print("e = $e");
               }
