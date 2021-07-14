@@ -44,7 +44,7 @@ try{
   await MynumberUtil.getSignatureByAuthPassword("password", "digestValue");
   await MynumberUtil.getSignatureBySigningPassword("password", "digestValue");
 
-  // original send APDU command.
+  // send original APDU command.
   await FlutterNfcMynumber.transceive(Uint8List.fromList([0x00, 0xB0, 0x00, 0x00, 0x04]))
 } catch (e) {}
 
