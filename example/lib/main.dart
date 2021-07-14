@@ -1,54 +1,42 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_nfc_mynumber/flutter_nfc_mynumber.dart';
-import 'package:flutter_nfc_mynumber/mynumber_util.dart';
+
+import 'login_count_page.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: ElevatedButton(
-            child: const Text('Button'),
-            onPressed: () async {
-              try {
-                var nfcAvailability = await FlutterNfcMynumber.nfcAvailability;
-                print("nfcAvailability = $nfcAvailability");
+      home: _MyAppState(),
+    );
+  }
+}
 
-                await FlutterNfcMynumber.startSession();
-
-                await FlutterNfcMynumber.setIosAlertMessage("working on it...");
-
-                var authPinRetryCount =
-                    await MynumberUtil.getAuthPinRetryCount();
-
-                print("authPinRetryCount = $authPinRetryCount");
-              } catch (e) {
-                print("e = $e");
-              }
-              sleep(new Duration(seconds: 1));
-              await FlutterNfcMynumber.finishSession();
-            },
-          ),
+class _MyAppState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter nfc Mynumber example'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              child: const Text('ログイン回数を取得'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginCountPage(),
+                    ));
+              },
+            ),
+          ],
         ),
       ),
     );
