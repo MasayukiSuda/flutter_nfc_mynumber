@@ -31,13 +31,22 @@ if (availability != NFCAvailability.available) {
     // oh-no
 }
 
+try{
+  await FlutterNfcMynumber.startSession();
 
-await FlutterNfcMynumber.startSession();
+  await FlutterNfcMynumber.setIosAlertMessage("connecting...");
 
-await FlutterNfcMynumber.setIosAlertMessage("working on it...");
+  // get retry count
+  await MynumberUtil.getAuthPinRetryCount();
+  await MynumberUtil.getSigningPinRetryCount();
 
-var authPinRetryCount = await MynumberUtil.getAuthPinRetryCount();
+  // get signature value
+  await MynumberUtil.getSignatureByAuthPassword("password", "digestValue");
+  await MynumberUtil.getSignatureBySigningPassword("password", "digestValue");
 
+  // original send APDU command.
+  await FlutterNfcMynumber.transceive(Uint8List.fromList([0x00, 0xB0, 0x00, 0x00, 0x04]))
+} catch (e) {}
 
 await FlutterNfcMynumber.finishSession();
 ```
