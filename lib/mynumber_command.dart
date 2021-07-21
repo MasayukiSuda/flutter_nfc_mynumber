@@ -22,6 +22,29 @@ class MynumberCommand {
         0x01
       ];
 
+  // 券面入力補助AP (DF)
+  static get commandTicketInputAssistance => [
+        0x00,
+        0xA4,
+        0x04,
+        0x0C,
+        0x0A,
+        0xD3,
+        0x92,
+        0x10,
+        0x00,
+        0x31,
+        0x00,
+        0x01,
+        0x01,
+        0x04,
+        0x08
+      ];
+
+  // 券面入力補助用PIN (EF)
+  static get commandTicketInputAssistancePin =>
+      [0x00, 0xA4, 0x02, 0x0C, 0x02, 0x00, 0x11];
+
   // 証明書全体のサイズを求める APDU
   static get commandReadBinary => [0x00, 0xB0, 0x00, 0x00, 0x04];
 
@@ -57,4 +80,7 @@ class MynumberCommand {
 
   // 暗号化用の APDU のヘッダ
   static get commandSignatureDataHeader => [0x80, 0x2A, 0x00, 0x80];
+
+  // マイナンバー読み取り
+  static get commandReadMynumber => [0x00, 0xB0, 0x00, 0x00, 0x00];
 }

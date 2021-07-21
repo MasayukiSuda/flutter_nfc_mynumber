@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_nfc_mynumber_example/mynumber_page.dart';
 
 import 'login_count_page.dart';
+import 'space.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,6 +35,17 @@ class _MyAppState extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => LoginCountPage(),
+                    ));
+              },
+            ),
+            SpaceBox.height(16),
+            ElevatedButton(
+              child: const Text('マイナンバーを取得'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MynumberPage(),
                     ));
               },
             ),

@@ -92,8 +92,7 @@ class MynumberUtil {
         .toList();
   }
 
-  static Future<List<int>> getSigningCertificate(
-      String password) async {
+  static Future<List<int>> getSigningCertificate(String password) async {
     // SELECT FILE 公的個人認証AP
     var selectFile = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(MynumberCommand.commandSelectFile));
@@ -147,6 +146,38 @@ class MynumberUtil {
     return commandSignatureDataResult
         .getRange(0, commandSignatureDataResult.length - 2)
         .toList();
+  }
+
+  static Future<String> getMyNumber(String password) async {
+    // SELECT FILE 券面入力補助AP (DF)
+    var selectFile = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(MynumberCommand.commandTicketInputAssistance));
+    commandResultCheck(selectFile);
+
+    // SELECT FILE 券面入力補助用PIN (EF)
+    var selectFileAuthPin = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(MynumberCommand.commandTicketInputAssistancePin));
+    commandResultCheck(selectFileAuthPin);
+
+    // VERIFY 認証用PIN
+    var verifyUserCertificationResult = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(commandSignaturePin(password.codeUnits)));
+    commandResultCheck(verifyUserCertificationResult);
+
+    // SELECT FILE CERT
+    var selectFileCertResult = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(MynumberCommand.commandSelectFileCert));
+    commandResultCheck(selectFileCertResult);
+
+    var mynumber = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(MynumberCommand.commandReadMynumber));
+    commandResultCheck(mynumber);
+
+    return mynumber
+        .getRange(3, 15)
+        .toList()
+        .map((e) => e.toRadixString(16).substring(1, 2))
+        .join();
   }
 
   static void commandResultCheck(List<int> result) {
