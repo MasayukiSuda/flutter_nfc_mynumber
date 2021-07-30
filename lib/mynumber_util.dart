@@ -62,7 +62,7 @@ class MynumberUtil {
   }
 
   static Future<List<int>> getSignatureByAuthPassword(
-      String password, String digestValue) async {
+      String password, Uint8List digestValue) async {
     // SELECT FILE 公的個人認証AP
     var selectFile = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(MynumberCommand.commandSelectFile));
@@ -85,7 +85,7 @@ class MynumberUtil {
 
     // COMPUTE DIGITAL SIGNATURE
     var commandSignatureDataResult = await FlutterNfcMynumber.transceive(
-        Uint8List.fromList(commandSignatureData(digestValue.codeUnits)));
+        Uint8List.fromList(commandSignatureData(digestValue)));
     commandResultCheck(commandSignatureDataResult);
     return commandSignatureDataResult
         .getRange(0, commandSignatureDataResult.length - 2)
@@ -118,7 +118,7 @@ class MynumberUtil {
   }
 
   static Future<List<int>> getSignatureBySigningPassword(
-      String password, String digestValue) async {
+      String password, Uint8List digestValue) async {
     // SELECT FILE 公的個人認証AP
     var selectFile = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(MynumberCommand.commandSelectFile));
@@ -141,7 +141,7 @@ class MynumberUtil {
 
     // COMPUTE DIGITAL SIGNATURE
     var commandSignatureDataResult = await FlutterNfcMynumber.transceive(
-        Uint8List.fromList(commandSignatureData(digestValue.codeUnits)));
+        Uint8List.fromList(commandSignatureData(digestValue)));
     commandResultCheck(commandSignatureDataResult);
     return commandSignatureDataResult
         .getRange(0, commandSignatureDataResult.length - 2)
