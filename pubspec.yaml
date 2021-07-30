@@ -1,6 +1,6 @@
 name: flutter_nfc_mynumber
 description: Flutter plugin for accessing the Japanese Mynumber features on Android and iOS.
-version: 0.0.3
+version: 0.0.4
 repository: https://github.com/MasayukiSuda/flutter_nfc_mynumber
 
 environment:
