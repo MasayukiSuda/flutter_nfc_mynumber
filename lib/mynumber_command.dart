@@ -83,4 +83,25 @@ class MynumberCommand {
 
   // マイナンバー読み取り
   static get commandReadMynumber => [0x00, 0xB0, 0x00, 0x00, 0x00];
+
+  // SELECT FILE: 基本4情報 (EF)
+  static get commandBasicInfo => [0x00, 0xA4, 0x02, 0x0C, 0x02, 0x00, 0x02];
+
+  // READ BINARY: 基本4情報の読み取り サイズのみ
+  static get commandBasicInfoReadBinaryLength => [0x00, 0xB0, 0x00, 0x02, 0x01];
+
+  // READ BINARY: 基本4情報の読み取り
+  static get commandBasicInfoReadBinary => [0x00, 0xB0, 0x00, 0x00, 0x71];
+
+  // 基本４情報名前の読み取り時のheader
+  static get commandBasicInfoHeaderName => [0xDF, 0x22, 0x0F];
+
+  // 基本４情報住所の読み取り時のheader
+  static get commandBasicInfoHeaderAddress => [0xDF, 0x23, 0x39];
+
+  // 基本４情報誕生日の読み取り時のheader
+  static get commandBasicInfoHeaderBirthday => [0xDF, 0x24, 0x08];
+
+  // 基本４情報性別読み取り時のheader
+  static get commandBasicInfoHeaderGender => [0xDF, 0x25, 0x01];
 }

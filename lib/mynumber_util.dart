@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 
 import 'flutter_nfc_mynumber.dart';
+import 'model/basic_info.dart';
 import 'mynumber_command.dart';
 import 'mynumber_command_error.dart';
 import 'mynumber_exception.dart';
@@ -180,6 +182,39 @@ class MynumberUtil {
         .join();
   }
 
+  static Future<BasicInfo> getBasicInfo(String password) async {
+    // SELECT FILE 券面入力補助AP (DF)
+    var selectFile = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(MynumberCommand.commandTicketInputAssistance));
+    commandResultCheck(selectFile);
+    print("selectFile = $selectFile");
+
+    // SELECT FILE 券面入力補助用PIN (EF)
+    var selectFileAuthPin = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(MynumberCommand.commandTicketInputAssistancePin));
+    commandResultCheck(selectFileAuthPin);
+    print("selectFileAuthPin = $selectFileAuthPin");
+
+    // VERIFY 認証用PIN
+    var verifyUserCertificationResult = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(commandSignaturePin(password.codeUnits)));
+    commandResultCheck(verifyUserCertificationResult);
+    print("verifyUserCertificationResult = $verifyUserCertificationResult");
+
+    // SELECT FILE: 基本4情報 (EF)
+    var selectBasicInfo = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(MynumberCommand.commandBasicInfo));
+    commandResultCheck(selectBasicInfo);
+    print("selectBasicInfo = $selectBasicInfo");
+
+    var basicInfoReadBinaryLength = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(MynumberCommand.commandBasicInfoReadBinaryLength));
+    commandResultCheck(basicInfoReadBinaryLength);
+    print("basicInfoReadBinaryLength = $basicInfoReadBinaryLength");
+
+    return await commandReadBasicInfo();
+  }
+
   static void commandResultCheck(List<int> result) {
     if (listEquals(result.getRange(result.length - 2, result.length).toList(),
         MynumberCommand.resultSuccess)) return;
@@ -216,6 +251,69 @@ class MynumberUtil {
 
   static List<int> commandReadBlock(int readIndex) {
     return [0x00, 0xB0, readIndex.toUnsigned(16), 0x00, 0x00];
+  }
+
+  static Future<BasicInfo> commandReadBasicInfo() async {
+    var basicInfoReadBinary = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(MynumberCommand.commandBasicInfoReadBinary));
+    commandResultCheck(basicInfoReadBinary);
+
+    var nameIndex = _indexOfCommand(
+        basicInfoReadBinary, MynumberCommand.commandBasicInfoHeaderName);
+    var addressIndex = _indexOfCommand(
+        basicInfoReadBinary, MynumberCommand.commandBasicInfoHeaderAddress);
+    var birthdayIndex = _indexOfCommand(
+        basicInfoReadBinary, MynumberCommand.commandBasicInfoHeaderBirthday);
+    var genderIndex = _indexOfCommand(
+        basicInfoReadBinary, MynumberCommand.commandBasicInfoHeaderGender);
+
+    var name =
+        basicInfoReadBinary.getRange(nameIndex + 3, addressIndex).toList();
+    var address =
+        basicInfoReadBinary.getRange(addressIndex + 3, birthdayIndex).toList();
+    var birthday =
+        basicInfoReadBinary.getRange(birthdayIndex + 3, genderIndex).toList();
+    var genderInfo = basicInfoReadBinary[genderIndex + 3].toRadixString(16);
+
+    var gender;
+    switch (genderInfo) {
+      case "31":
+        gender = Gender.MEN;
+        break;
+      case "32":
+        gender = Gender.WOMEN;
+        break;
+      case "33":
+        gender = Gender.OTHER;
+        break;
+      default:
+        gender = Gender.MEN;
+    }
+
+    return BasicInfo(
+        utf8.decode(name), utf8.decode(address), utf8.decode(birthday), gender);
+  }
+
+  static int _indexOfCommand(List<int> list, List<int> command) {
+    var counter = 0;
+    for (int value in list) {
+      if (value == command[0]) {
+        var isSame = true;
+        command.asMap().forEach((int i, int commandValue) {
+          if (list[counter + i] != commandValue) {
+            isSame = false;
+          }
+        });
+        if (isSame) {
+          break;
+        }
+      }
+      counter++;
+    }
+    if (counter == list.length) {
+      return -1;
+    }
+    return counter;
   }
 
   static int bytesToUnsignedShort(int byte1, int byte2, bool bigEndian) {
