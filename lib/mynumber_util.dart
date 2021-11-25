@@ -78,7 +78,8 @@ class MynumberUtil {
     // VERIFY 認証用PIN
     var verifyUserCertificationResult = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(commandSignaturePin(password.codeUnits)));
-    commandResultCheck(verifyUserCertificationResult);
+    commandResultCheck(verifyUserCertificationResult,
+        MynumberCommandError.WRONG_USER_AUTH_PASSWORD);
 
     // SELECT FILE 認証用鍵
     var selectFileAuthKeyResult = await FlutterNfcMynumber.transceive(
@@ -108,7 +109,8 @@ class MynumberUtil {
     // VERIFY 認証用PIN
     var verifyUserCertificationResult = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(commandSignaturePin(password.codeUnits)));
-    commandResultCheck(verifyUserCertificationResult);
+    commandResultCheck(verifyUserCertificationResult,
+        MynumberCommandError.WRONG_SIGNATURE_PASSWORD);
 
     // SELECT FILE CERT
     var selectFileCertResult = await FlutterNfcMynumber.transceive(
@@ -134,7 +136,8 @@ class MynumberUtil {
     // VERIFY 認証用PIN
     var verifyUserCertificationResult = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(commandSignaturePin(password.codeUnits)));
-    commandResultCheck(verifyUserCertificationResult);
+    commandResultCheck(verifyUserCertificationResult,
+        MynumberCommandError.WRONG_SIGNATURE_PASSWORD);
 
     // SELECT FILE CERT
     var selectFileCertResult = await FlutterNfcMynumber.transceive(
@@ -164,7 +167,8 @@ class MynumberUtil {
     // VERIFY 認証用PIN
     var verifyUserCertificationResult = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(commandSignaturePin(password.codeUnits)));
-    commandResultCheck(verifyUserCertificationResult);
+    commandResultCheck(verifyUserCertificationResult,
+        MynumberCommandError.WRONG_USER_AUTH_PASSWORD);
 
     // SELECT FILE CERT
     var selectFileCertResult = await FlutterNfcMynumber.transceive(
@@ -198,7 +202,8 @@ class MynumberUtil {
     // VERIFY 認証用PIN
     var verifyUserCertificationResult = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(commandSignaturePin(password.codeUnits)));
-    commandResultCheck(verifyUserCertificationResult);
+    commandResultCheck(verifyUserCertificationResult,
+        MynumberCommandError.WRONG_USER_AUTH_PASSWORD);
     print("verifyUserCertificationResult = $verifyUserCertificationResult");
 
     // SELECT FILE: 基本4情報 (EF)
@@ -215,10 +220,11 @@ class MynumberUtil {
     return await commandReadBasicInfo();
   }
 
-  static void commandResultCheck(List<int> result) {
+  static void commandResultCheck(List<int> result,
+      [MynumberCommandError error = MynumberCommandError.UNEXPECTED_COMMAND]) {
     if (listEquals(result.getRange(result.length - 2, result.length).toList(),
         MynumberCommand.resultSuccess)) return;
-    throw MynumberException(MynumberCommandError.UNEXPECTED_COMMAND);
+    throw MynumberException(error);
   }
 
   static void commandRetryCountResultCheck(List<int> result) {
