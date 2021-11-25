@@ -1,3 +1,6 @@
+## 0.0.6
+* fix error handling.
+
 ## 0.0.5
 * Add getBasicInfo method to MynumberUtil and getBasicInfo sample.
 
