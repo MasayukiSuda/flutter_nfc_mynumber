@@ -12,6 +12,7 @@ class LoginCountPage extends StatefulWidget {
 class _LoginCountPage extends State<LoginCountPage> {
   String _authPinRetryCount = "-";
   String _signingPinRetryCount = "-";
+  String _ticketInputAssistanceCount = "-";
 
   @override
   void initState() {
@@ -42,6 +43,13 @@ class _LoginCountPage extends State<LoginCountPage> {
             SpaceBox.height(16),
             Text("残り回数 $_authPinRetryCount 回"),
             SpaceBox.height(56),
+            Text(
+              "券面事項入力補助用",
+              textAlign: TextAlign.center,
+            ),
+            SpaceBox.height(16),
+            Text("残り回数 $_ticketInputAssistanceCount 回"),
+            SpaceBox.height(56),
             ElevatedButton(
               child: const Text('マイナンバーカードを読み込む'),
               onPressed: () async {
@@ -60,9 +68,14 @@ class _LoginCountPage extends State<LoginCountPage> {
                   var signingPinRetryCount =
                       await MynumberUtil.getSigningPinRetryCount();
 
+                  var ticketInputAssistanceCount =
+                      await MynumberUtil.getTicketInputAssistanceRetryCount();
+
                   setState(() {
                     _signingPinRetryCount = signingPinRetryCount.toString();
                     _authPinRetryCount = authPinRetryCount.toString();
+                    _ticketInputAssistanceCount =
+                        ticketInputAssistanceCount.toString();
                   });
                 } catch (e) {
                   print("error $e");

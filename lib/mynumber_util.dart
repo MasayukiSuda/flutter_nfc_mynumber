@@ -220,6 +220,27 @@ class MynumberUtil {
     return await commandReadBasicInfo();
   }
 
+  static Future<int> getTicketInputAssistanceRetryCount() async {
+    // SELECT FILE 券面入力補助AP (DF)
+    var selectFile = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(MynumberCommand.commandTicketInputAssistance));
+    commandResultCheck(selectFile);
+    print("selectFile = $selectFile");
+
+    // SELECT FILE 券面入力補助用PIN (EF)
+    var selectFileAuthPin = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(MynumberCommand.commandTicketInputAssistancePin));
+    commandResultCheck(selectFileAuthPin);
+    print("selectFileAuthPin = $selectFileAuthPin");
+
+    // retry回数をGET
+    var retryCountResult = await FlutterNfcMynumber.transceive(
+        Uint8List.fromList(MynumberCommand.commandReadRetryCount));
+    commandRetryCountResultCheck(retryCountResult);
+
+    return _getRetryCountFromResult(retryCountResult);
+  }
+
   static void commandResultCheck(List<int> result,
       [MynumberCommandError error = MynumberCommandError.UNEXPECTED_COMMAND]) {
     if (listEquals(result.getRange(result.length - 2, result.length).toList(),
