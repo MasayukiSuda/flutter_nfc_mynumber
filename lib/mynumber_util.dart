@@ -168,7 +168,7 @@ class MynumberUtil {
     var verifyUserCertificationResult = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(commandSignaturePin(password.codeUnits)));
     commandResultCheck(verifyUserCertificationResult,
-        MynumberCommandError.WRONG_USER_AUTH_PASSWORD);
+        MynumberCommandError.WRONG_TICKET_INPUT_PASSWORD);
 
     // SELECT FILE CERT
     var selectFileCertResult = await FlutterNfcMynumber.transceive(
@@ -203,7 +203,7 @@ class MynumberUtil {
     var verifyUserCertificationResult = await FlutterNfcMynumber.transceive(
         Uint8List.fromList(commandSignaturePin(password.codeUnits)));
     commandResultCheck(verifyUserCertificationResult,
-        MynumberCommandError.WRONG_USER_AUTH_PASSWORD);
+        MynumberCommandError.WRONG_TICKET_INPUT_PASSWORD);
     print("verifyUserCertificationResult = $verifyUserCertificationResult");
 
     // SELECT FILE: 基本4情報 (EF)
