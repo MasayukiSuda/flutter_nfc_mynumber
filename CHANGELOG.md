@@ -1,3 +1,7 @@
+## 0.0.7
+* add getTicketInputAssistanceRetryCount method
+* add error status WRONG_TICKET_INPUT_PASSWORD
+
 ## 0.0.6
 * fix error handling.
 
