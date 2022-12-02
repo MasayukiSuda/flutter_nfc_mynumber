@@ -7,7 +7,6 @@ import android.nfc.tech.NfcB
 import android.nfc.tech.TagTechnology
 import android.os.Handler
 import android.os.Looper
-import androidx.annotation.NonNull
 import io.flutter.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -37,12 +36,12 @@ class FlutterNfcMynumberPlugin : FlutterPlugin, MethodCallHandler, ActivityAware
     }
   }
 
-  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+  override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_nfc_mynumber")
     channel.setMethodCallHandler(this)
   }
 
-  override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+  override fun onMethodCall(call: MethodCall, result: Result) {
     handleMethodCall(call, MethodResultWrapper(result))
   }
 
@@ -137,7 +136,7 @@ class FlutterNfcMynumberPlugin : FlutterPlugin, MethodCallHandler, ActivityAware
     }
   }
 
-  override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
   }
 
@@ -155,10 +154,10 @@ class FlutterNfcMynumberPlugin : FlutterPlugin, MethodCallHandler, ActivityAware
     tagTechnology = null
   }
 
-  private class MethodResultWrapper internal constructor(result: Result) : Result {
+  private class MethodResultWrapper constructor(result: Result) : Result {
 
     private val methodResult: Result = result
-    private var hasError: Boolean = false;
+    private var hasError: Boolean = false
 
     companion object {
       // a Handler is always thread-safe, so use a singleton here
@@ -175,7 +174,7 @@ class FlutterNfcMynumberPlugin : FlutterPlugin, MethodCallHandler, ActivityAware
       }
     }
 
-    override fun error(errorCode: String?, errorMessage: String?, errorDetails: Any?) {
+    override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
       handler.post {
         ignoreIllegalState {
           methodResult.error(errorCode, errorMessage, errorDetails)
@@ -195,7 +194,7 @@ class FlutterNfcMynumberPlugin : FlutterPlugin, MethodCallHandler, ActivityAware
       try {
         if (!hasError) fn()
       } catch (e: IllegalStateException) {
-        hasError = true;
+        hasError = true
         Log.w(TAG, "Exception occurred when using MethodChannel.Result: $e")
         Log.w(TAG, "Will ignore all following usage of object: $methodResult")
       }
