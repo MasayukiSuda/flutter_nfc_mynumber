@@ -1,13 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_nfc_mynumber/mynumber_command.dart';
-
-import 'mynumber_command_error.dart';
-import 'mynumber_exception.dart';
 
 /// Availability of the NFC reader.
 enum NFCAvailability {
